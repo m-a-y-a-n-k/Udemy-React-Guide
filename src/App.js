@@ -1,25 +1,78 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
+import Person from "./Person/Person";
 
 class App extends Component {
+  state = {
+    people: [
+      { id: "asjhkd", name: "Max", age: 28 },
+      { id: "sdaiof", name: "Manu", age: 21 },
+      { id: "nkassm", name: "Stephany", age: 26 }
+    ],
+    showPeople: false
+  };
+
+  deletePersonHandler = pIndex => {
+    const people = [...this.state.people];
+    people.splice(pIndex, 1);
+    this.setState({ people: people });
+  };
+
+  nameChangedHandler = (event, id) => {
+    const personIndex = this.state.people.findIndex(person => {
+      return id === person.id;
+    });
+    const person = {
+      ...this.state.people[personIndex]
+    };
+    person.name = event.target.value;
+    const people = [...this.state.people];
+    people[personIndex] = person;
+    this.setState({
+      people: people
+    });
+  };
+
+  togglePersonsHandler = event => {
+    const doesShow = this.state.showPeople;
+    this.setState({ showPeople: !doesShow });
+  };
+
   render() {
+    let people = null;
+
+    if (this.state.showPeople) {
+      people = (
+        <div>
+          {this.state.people.map((person, index) => {
+            return (
+              <Person
+                key={person.id}
+                click={() => this.deletePersonHandler(index)}
+                name={person.name}
+                age={person.age}
+                changed={event => this.nameChangedHandler(event, person.id)}
+              />
+            );
+          })}
+        </div>
+      );
+    }
+
+    let classes = [];
+
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <h1>Hi , I am a React App !!</h1>
+        <p className={classes.join(" ")}>This is really working</p>
+        <button
+          onClick={() => {
+            this.togglePersonsHandler();
+          }}
+        >
+          Toggle People View
+        </button>
+        {people}
       </div>
     );
   }
