@@ -2,17 +2,10 @@ import React from "react";
 import classes from "./Person.css";
 
 const person = props => {
-  const delStytles = {
-    margin: "1%",
-    padding: "2%",
-    color: "red",
-    fontWeight: "bold",
-    float: "right",
-    display: "inline"
-  };
+  
   return (
     <div className={classes.Person}>
-      <span style={delStytles} onClick={props.click}>
+      <span className = {classes.del} onClick={props.click}>
         X
       </span>
       <span style={{ width: "100%" }}>
